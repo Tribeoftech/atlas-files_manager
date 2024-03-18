@@ -1,15 +1,21 @@
+/**
+ * RedisClient class that wraps a redis client instance.
+ * Provides promisified methods for common redis commands.
+ */
 // Task 0 - Creating Redis Client
-import { resolve } from 'path';
-import redis from 'redis';
-import { promisify } from 'util';
+import { resolve } from "path";
+import redis from "redis";
+import { promisify } from "util";
 // RedisClient class
 class RedisClient {
   constructor() {
     this.client = redis.createClient();
     // this.connected = false;
 
-    this.client.on('error', (error) => { console.error(`Redis client not connected: ${error}`); });
-    this.client.on('ready', () => {
+    this.client.on("error", (error) => {
+      console.error(`Redis client not connected: ${error}`);
+    });
+    this.client.on("ready", () => {
       // this.connected = true;
       resolve();
     });
