@@ -1,7 +1,11 @@
+/**
+ * Sets up an Express server instance with JSON body parsing middleware and the
+ * application routes. Exports the Express app instance.
+ */
 // Setting up the Express Server
 
-import express from 'express';
-import routes from './routes/index';
+import express from "express";
+import routes from "./routes/index";
 
 const app = express();
 const port = process.env.PORT || 5000;
