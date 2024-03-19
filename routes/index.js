@@ -7,12 +7,12 @@
  * Exports router.
  */
 // Setting up routes
-const AppController = require('../controllers/AppController');
-const AuthController = require('../controllers/AuthController');
-const FilesController = require('../controllers/FilesController');
-const UsersController = require('../controllers/UsersController');
+import { Router } from 'express';
+import AppController from '../controllers/AppController';
+import UsersController from '../controllers/UsersController';
+import AuthController from '../controllers/AuthController';
+import FilesController from '../controllers/FilesController';
 
-const { Router } = require('express');
 const router = Router();
 
 // Get Routes
@@ -26,7 +26,7 @@ router.get('/files', FilesController.getIndex);
 router.get('/files/:id/data', FilesController.getFile);
 
 // Post Routes
-router.post('/users', UsersController.createUser);
+router.post('/users', UsersController.postNew);
 router.post('/files', FilesController.postUpload);
 
 // Put Routes
