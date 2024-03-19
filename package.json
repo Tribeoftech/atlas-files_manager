@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "12": "^1.0.2",
     "bull": "^3.29.3",
     "chai-http": "^4.3.0",
     "express": "^4.17.1",
@@ -23,6 +24,7 @@
     "mime-types": "^2.1.27",
     "mongodb": "^3.5.9",
     "mongoose": "^8.2.2",
+    "node": "^21.7.1",
     "npm": "^6.14.16",
     "pip": "0.0.1",
     "pip3": "^420.911.69",
