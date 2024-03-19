@@ -1,32 +1,36 @@
-// Returns status of Redis and database by calling isAlive() methods on redisClient and dbClient
-const dbClient = require('../utils/db');
-const redisClient = require('../utils/redis');
+/**
+ * Imports the Redis client instance and database client instance
+ * that will be used throughout the application.
+ */
+import dbClient from "../utils/db";
+import redisClient from "../utils/redis";
 
+/**
+ * Gets the status of Redis and database connections.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise} A promise that resolves with a JSON response
+ * containing the status of the Redis and database connections.
+ */
 class AppController {
-  /**
-   * should return if Redis is alive and if the DB is alive too
-   * by using the 2 utils created previously:
-   * { "redis": true, "db": true } with a status code 200
-   */
-  static getStatus(request, response) {
-    const status = {
-      redis: redisClient.isAlive(),
-      db: dbClient.isAlive(),
-    };
-    response.status(200).send(status);
+  static async getStatus(req, res) {
+    const isRedisAlive = redisClient.isAlive();
+    const isDbAlive = dbClient.isAlive();
+    return res.status(200).json({ redis: isRedisAlive, db: isDbAlive });
   }
-
   /**
-   * should return the number of users and files in DB:
-   * { "users": 12, "files": 1231 }
-   *  with a status code 200
+   * Gets stats about users and files from the database.
+   *
+   * This is an async method that queries the database client
+   * to get the number of users and number of files currently
+   * stored. It returns a JSON response with the results.
    */
-  static async getStats(request, response) {
-    const stats = {
-      users: await dbClient.nbUsers(),
-      files: await dbClient.nbFiles(),
-    };
-    response.status(200).send(stats);
+
+  static async getStats(req, res) {
+    const numberOfUsers = await dbClient.nbUsers();
+    const numberOfFiles = await dbClient.nbFiles();
+    return res.status(200).json({ users: numberOfUsers, files: numberOfFiles });
   }
 }
 
