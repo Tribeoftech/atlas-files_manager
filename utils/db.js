@@ -1,31 +1,26 @@
-/**
- * Connects to a MongoDB database and provides methods to
- * interact with the database collections.
- *
- * Creates a MongoDB client instance and connects to the database.
- * Provides methods to get user and file counts and find a user.
- * Exports an instance of the DBClient class.
- */
+// MongoDB database 
+
+// imports
 import { MongoClient } from "mongodb";
 
-// Environment variables for MongoDB connection
+// environment variables
 const host = process.env.DB_HOST || "localhost";
 const port = process.env.DB_PORT || "27017";
 const database = process.env.DB_DATABASE || "files_manager";
 
+// MongoDB client class
 class DBClient {
   constructor() {
-    // MongoDB connection string
     this.dbUrl = `mongodb://${host}:${port}`;
     this.dbName = database;
     this.client = new MongoClient(this.dbUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    // Connecting to MongoDB
-    this.client.connect((err) => {
-      if (err) {
-        console.error("Failed to connect to MongoDB", err);
+
+    this.client.connect((error) => {
+      if (error) {
+        console.error("Failed to connect to MongoDB", error);
         return;
       }
       console.log("Connected to MongoDB");
@@ -33,7 +28,7 @@ class DBClient {
     });
   }
 
-  // Check if the connection is alive
+  // Checks for MongoDB Connection
   isAlive() {
     return (
       !!this.client &&
@@ -42,7 +37,7 @@ class DBClient {
     );
   }
 
-  // Getting number of users
+  // Gets user count
   async nbUsers() {
     if (this.db) {
       return this.db.collection("users").countDocuments();
@@ -50,7 +45,7 @@ class DBClient {
     throw new Error("DB is not initialized.");
   }
 
-  // Get the number of files
+  // Gets file count
   async nbFiles() {
     if (this.db) {
       return this.db.collection("files").countDocuments();
@@ -58,7 +53,7 @@ class DBClient {
     throw new Error("DB is not initialized.");
   }
 
-  // Find the user and return it
+  // Finds User
   async findUser(filter) {
     try {
       const user = await this.db.collection("users").findOne(filter);
@@ -70,6 +65,6 @@ class DBClient {
   }
 }
 
-// Export an instance of DBClient
+// Exports dbClient
 const dbClient = new DBClient();
 export default dbClient;
