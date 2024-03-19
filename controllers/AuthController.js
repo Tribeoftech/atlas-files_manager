@@ -5,15 +5,13 @@
  *
  * Signs out a user by deleting their auth token from Redis based on the provided token.
  */
-// Controller for authentication
-import sha1 from 'sha1';
-import { v4 as uuidv4 } from 'uuid'; // generate unique id
+import { v4 as uuidv4 } from 'uuid';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
 /**
- * Checks for an Authorization header and responds with 401 unauthorized if it doesn't exist.
- * If the header exists, it logs it and continues processing the request.
+ * Checks for an authorization header and responds
+ * with 401 unauthorized if no header is present.
  */
 const AuthController = {
   getConnect: async (req, res) => {
@@ -24,7 +22,7 @@ const AuthController = {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-        /**
+    /**
      * Decodes the Basic authentication header to extract the email and password credentials.
      * Splits the decoded credentials string on ':' to separate email and password.
      * Returns 401 Unauthorized if email or password are missing.
@@ -40,7 +38,7 @@ const AuthController = {
         /**
      * Looks up the user by email and hashed password.
      * If no matching user is found, returns 401 Unauthorized error.
-     * If user is found, continues with auth token generation.
+     * If user is found, continues with auth flow.
      */
     const hashedPassword = sha1(password);
 
@@ -50,23 +48,30 @@ const AuthController = {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
+            /**
+       * Generates a random auth token, stores it and the user ID in Redis with 24 hour expiration,
+       * and returns the token in a 200 response.
+       * Catches any errors and returns a 500 response.
+       */
       const token = uuidv4();
       await redisClient.set(`auth_${token}`, user._id.toString(), 24 * 60 * 60); // set token valid for 24 hours
 
       return res.status(200).json({ token });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json({ error: "Internal server error" });
     }
   },
-  /**
+
+    /**
    * Signs out a user by deleting their auth token from Redis.
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @returns {Promise}
+   * Deletes the user's auth token from Redis based on the 'x-token' header.
+   * Returns 401 unauthorized if token is invalid.
+   * Returns 204 no content if token is successfully deleted.
    */
-
   getDisconnect: async (req, res) => {
     const token = req.headers["x-token"];
     if (!token) {
