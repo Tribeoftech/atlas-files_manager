@@ -7,30 +7,30 @@
  * Exports router.
  */
 // Setting up routes
-import { Router } from "express";
-import AppController from "../controllers/AppController";
-import AuthController from "../controllers/AuthController";
-import FilesController from "../controllers/FilesController";
-import UsersController from "../controllers/UsersController";
+const AppController = require('../controllers/AppController');
+const AuthController = require('../controllers/AuthController');
+const FilesController = require('../controllers/FilesController');
+const UsersController = require('../controllers/UsersController');
 
+const { Router } = require('express');
 const router = Router();
 
 // Get Routes
-router.get("/status", AppController.getStatus);
-router.get("/stats", AppController.getStats);
-router.get("/connect", AuthController.getConnect);
-router.get("/disconnect", AuthController.getDisconnect);
-router.get("/users/me", UsersController.getMe);
-router.get("/files/:id", FilesController.getShow);
-router.get("/files", FilesController.getIndex);
-router.get("/files/:id/data", FilesController.getFile);
+router.get('/status', AppController.getStatus);
+router.get('/stats', AppController.getStats);
+router.get('/connect', AuthController.getConnect);
+router.get('/disconnect', AuthController.getDisconnect);
+router.get('/users/me', UsersController.getMe);
+router.get('/files/:id', FilesController.getShow);
+router.get('/files', FilesController.getIndex);
+router.get('/files/:id/data', FilesController.getFile);
 
 // Post Routes
-router.post("/users", UsersController.postNew);
-router.post("/files", FilesController.postUpload);
+router.post('/users', UsersController.createUser);
+router.post('/files', FilesController.postUpload);
 
 // Put Routes
-router.put("/files/:id/publish", FilesController.putPublish);
-router.put("/files/:id/unpublish", FilesController.putUnpublish);
+router.put('/files/:id/publish', FilesController.putPublish);
+router.put('/files/:id/unpublish', FilesController.putUnpublish);
 
 module.exports = router;
