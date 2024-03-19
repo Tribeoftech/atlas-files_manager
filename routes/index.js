@@ -1,19 +1,17 @@
 /**
- * Sets up routes and controllers for the Express app.
- * Imports router and controllers.
- * Defines router instance.
- * Sets up GET, POST, and PUT routes for status, stats, auth,
- * users, and files controllers.
- * Exports router.
+ * Defines API endpoint routes and maps them to controller methods.
+ * Uses Express router to handle routing.
  */
-// Setting up routes
-const { Router } = require('express');
+// setting up routes
+const { express } = require('express');
+
 import AppController from '../controllers/AppController';
 import UsersController from '../controllers/UsersController';
 import AuthController from '../controllers/AuthController';
 import FilesController from '../controllers/FilesController';
 
-const router = Router();
+// initialize router
+const router = express.router();
 
 // Get Routes
 router.get('/status', AppController.getStatus);
