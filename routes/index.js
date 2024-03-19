@@ -1,29 +1,28 @@
+
 /**
- * Defines API endpoint routes and maps them to controller methods.
- * Uses Express router to handle routing.
+ * Imports controllers to be registered as routes.
  */
-const express = require('express');
+import { Router } from "express";
+import AppController from "../controllers/AppController";
+import AuthController from "../controllers/AuthController";
+import FilesController from "../controllers/FilesController";
+import UsersController from "../controllers/UsersController";
 
 /**
- * Imports controller modules and initializes Express router.
- * The imported controllers contain route handlers that will be mapped to API endpoints.
+ * Creates a new router instance.
  */
-const AppController = require("../controllers/AppController");
-const AuthController = require("../controllers/AuthController");
-const FilesController = require("../controllers/FilesController");
-const UsersController = require("../controllers/UsersController");
+const router = Router();
 
-const router = express.Router();
 
 /**
- * GET /status - Get app status
- * GET /stats - Get app stats
- * GET /connect - Handle user connect
- * GET /disconnect - Handle user disconnect
- * GET /users/me - Get current user
- * GET /files/:id - Get file metadata
- * GET /files - List files
- * GET /files/:id/data - Get file contents
+ * GET /status - Get app status.
+ * GET /stats - Get app stats.
+ * GET /connect - Handle OAuth connect.
+ * GET /disconnect - Handle OAuth disconnect.
+ * GET /users/me - Get current user.
+ * GET /files/:id - Get file info.
+ * GET /files - List files.
+ * GET /files/:id/data - Get file data.
  */
 router.get("/status", AppController.getStatus);
 router.get("/stats", AppController.getStats);
@@ -33,27 +32,21 @@ router.get("/users/me", UsersController.getMe);
 router.get("/files/:id", FilesController.getShow);
 router.get("/files", FilesController.getIndex);
 router.get("/files/:id/data", FilesController.getFile);
-
 /**
- * Creates a new user record.
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * POST /users - Create a new user.
  */
 
 /**
- * Uploads a new file and saves it.
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * POST /files - Upload a new file.
  */
+
 router.post("/users", UsersController.postNew);
 router.post("/files", FilesController.postUpload);
 
 /**
- * PUT routes to publish and unpublish a file.
- * Publish makes a file publicly accessible.
- * Unpublish removes public access to a file.
+ * PUT /files/:id/publish - Publish a file.
+ *
+ * PUT /files/:id/unpublish - Unpublish a file.
  */
 router.put("/files/:id/publish", FilesController.putPublish);
 router.put("/files/:id/unpublish", FilesController.putUnpublish);
