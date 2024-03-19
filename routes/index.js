@@ -3,11 +3,11 @@
  * Uses Express router to handle routing.
  */
 // setting up routes
-const { express } = require('express');
 import AppController from '../controllers/AppController';
-import UsersController from '../controllers/UsersController';
 import AuthController from '../controllers/AuthController';
 import FilesController from '../controllers/FilesController';
+import UsersController from '../controllers/UsersController';
+import { express } from = require('express');
 
 const router = express();
 
