@@ -1,5 +1,5 @@
 # Files Manager
-
+# Contributers Alex Dipboye & Aaron Bell
 ## Description
 
 This project is a comprehensive back-end application designed to illustrate the assembly of various technologies and concepts including authentication, NodeJS, MongoDB, Redis, pagination, and background processing. The primary goal is to build a simple platform to upload and view files, featuring user authentication via tokens, file uploads, permissions management, thumbnail generation, and more.
