@@ -1,3 +1,16 @@
+"""Uploads an image file to a server.
+
+Encodes the image file as base64, constructs a JSON payload with metadata, 
+makes an authenticated POST request to the server, and prints the response.
+
+Args:
+  file_path: Path to the image file to upload
+  token: Authentication token 
+  parentId: ID of the parent folder on the server
+
+Returns:
+  The JSON response from the server 
+"""
 import base64
 import requests
 import sys
