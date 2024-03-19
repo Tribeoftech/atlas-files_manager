@@ -1,16 +1,22 @@
-import sha1 from 'sha1';
-import { ObjectId } from 'mongodb';
-import dbClient from '../utils/db';
-import redisClient from '../utils/redis';
+/**
+ * UsersController handles user account management operations.
+ *
+ * postNew creates a new user account.
+ * getMe returns info about the currently authenticated user.
+ */
+import { ObjectId } from "mongodb";
+import sha1 from "sha1";
+import dbClient from "../utils/db";
+import redisClient from "../utils/redis";
 
 const ERROR_MSG = {
-  email: 'Missing email',
-  password: 'Missing password',
-  alreadyExists: 'Already exist',
+  email: "Missing email",
+  password: "Missing password",
+  alreadyExists: "Already exist",
 };
 
 const unauthorizedError = {
-  error: 'Unauthorized',
+  error: "Unauthorized",
 };
 
 class UsersController {
@@ -45,7 +51,7 @@ class UsersController {
   }
 
   static async getMe(req, res) {
-    const token = req.headers['x-token'];
+    const token = req.headers["x-token"];
     const userId = await redisClient.get(`auth_${token}`);
     const user = await dbClient.users.findOne({ _id: ObjectId(userId) });
 

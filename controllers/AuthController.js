@@ -1,10 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
-import sha1 from 'sha1';
-import redisClient from '../utils/redis';
-import dbClient from '../utils/db';
+/**
+ * AuthController handles user authentication.
+ *
+ * getConnect authenticates a user and returns a new auth token.
+ * getDisconnect invalidates the auth token to log the user out.
+ */
+import sha1 from "sha1";
+import { v4 as uuidv4 } from "uuid";
+import dbClient from "../utils/db";
+import redisClient from "../utils/redis";
 
 const unauthorizedError = {
-  error: 'Unauthorized',
+  error: "Unauthorized",
 };
 
 class AuthController {
@@ -15,9 +21,9 @@ class AuthController {
       return res.status(401).send(unauthorizedError);
     }
 
-    const userDataEncoded = authorization.split(' ')[1];
-    const userDataDecoded = Buffer.from(userDataEncoded, 'base64');
-    const [email, password] = userDataDecoded.toString().split(':');
+    const userDataEncoded = authorization.split(" ")[1];
+    const userDataDecoded = Buffer.from(userDataEncoded, "base64");
+    const [email, password] = userDataDecoded.toString().split(":");
 
     if (!email || !password) {
       return res.status(401).send(unauthorizedError);
@@ -41,7 +47,7 @@ class AuthController {
   }
 
   static async getDisconnect(req, res) {
-    const token = req.headers['x-token'];
+    const token = req.headers["x-token"];
 
     const sesionExists = Boolean(await redisClient.get(`auth_${token}`));
 
