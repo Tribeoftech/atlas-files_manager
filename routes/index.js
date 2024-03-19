@@ -7,7 +7,7 @@
  * Exports router.
  */
 // Setting up routes
-import { Router } from 'express';
+const { Router } = require('express');
 import AppController from '../controllers/AppController';
 import UsersController from '../controllers/UsersController';
 import AuthController from '../controllers/AuthController';
