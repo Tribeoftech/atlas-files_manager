@@ -8,7 +8,7 @@
  */
 // Setting up routes
 const { Router } = require('express');
-const { AppController } = require('../controllers/AppController');
+import AppController from '../controllers/AppController';
 import UsersController from '../controllers/UsersController';
 import AuthController from '../controllers/AuthController';
 import FilesController from '../controllers/FilesController';
@@ -26,7 +26,7 @@ router.get('/files', FilesController.getIndex);
 router.get('/files/:id/data', FilesController.getFile);
 
 // Post Routes
-router.post('/users', UsersController.postNew);
+router.post('/users', UsersController.createUser);
 router.post('/files', FilesController.postUpload);
 
 // Put Routes

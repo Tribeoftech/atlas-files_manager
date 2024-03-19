@@ -11,7 +11,7 @@ import redisClient from "../utils/redis";
 // import crypto for password hashing
 
 class UsersController {
-  static async postNew(req, res) {
+  static async createUser(req, res) {
     const { email, password } = req.body;
 
     // Validate email and password presence
