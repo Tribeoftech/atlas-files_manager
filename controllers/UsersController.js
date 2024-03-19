@@ -1,8 +1,13 @@
+/**
+ * User controller with methods for creating a new user, retrieving a user by token,
+ * and validating user input. Handles password hashing, user lookups in MongoDB,
+ * and Redis caching.
+ */
 // User Controllers for the application
-import crypto from 'crypto';
-import { ObjectId } from 'mongodb';
-import redisClient from '../utils/redis';
-import dbClient from '../utils/db';
+import crypto from "crypto";
+import { ObjectId } from "mongodb";
+import dbClient from "../utils/db";
+import redisClient from "../utils/redis";
 // import crypto for password hashing
 
 class UsersController {
@@ -11,23 +16,28 @@ class UsersController {
 
     // Validate email and password presence
     if (!email) {
-      return res.status(400).json({ error: 'Missing email' });
+      return res.status(400).json({ error: "Missing email" });
     }
     if (!password) {
-      return res.status(400).json({ error: 'Missing password' });
+      return res.status(400).json({ error: "Missing password" });
     }
 
     // Check if the email already exists
-    const existingUser = await dbClient.db.collection('users').findOne({ email });
+    const existingUser = await dbClient.db
+      .collection("users")
+      .findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'Already exist' });
+      return res.status(400).json({ error: "Already exist" });
     }
 
     // Hash the password with SHA1
-    const hashedPassword = crypto.createHash('sha1').update(password).digest('hex');
+    const hashedPassword = crypto
+      .createHash("sha1")
+      .update(password)
+      .digest("hex");
 
     // Create the new user
-    const newUser = await dbClient.db.collection('users').insertOne({
+    const newUser = await dbClient.db.collection("users").insertOne({
       email,
       password: hashedPassword,
     });
@@ -41,34 +51,36 @@ class UsersController {
 
   // Retrieve the user base on the token
   static async getMe(req, res) {
-    const token = req.headers['x-token'];
+    const token = req.headers["x-token"];
     if (!token) {
-      console.log('Token not valid or undefined');
-      return res.status(401).json({ error: 'Unauthorized' });
+      console.log("Token not valid or undefined");
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     try {
       // Retrieve user from Redis cache based on token
       const userId = await redisClient.get(`auth_${token}`);
-      console.log('userId from redisClient is:', userId);
+      console.log("userId from redisClient is:", userId);
       if (!userId) {
-        console.log('No userId or invalid');
-        return res.status(401).json({ error: 'Unauthorized' });
+        console.log("No userId or invalid");
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Retrieve user details from the database
-      const user = await dbClient.db.collection('users').findOne({ _id: new ObjectId(userId) });
+      const user = await dbClient.db
+        .collection("users")
+        .findOne({ _id: new ObjectId(userId) });
 
       if (!user) {
-        console.log('User not found in the database');
-        return res.status(401).json({ error: 'Unauthorized' });
+        console.log("User not found in the database");
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Return user email and id
       return res.status(200).json({ email: user.email, id: user._id });
     } catch (error) {
-      console.error('Error retrieving user:', error);
-      return res.status(500).json({ error: 'Internal Server Error' });
+      console.error("Error retrieving user:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
   }
 }

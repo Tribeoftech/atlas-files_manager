@@ -1,9 +1,19 @@
-import { v4 as uuidv4 } from 'uuid';
-import fs from 'fs';
-import path from 'path';
-import { ObjectId } from 'mongodb';
-import mime from 'mime-types'; // Added to handle MIME types
+/**
+ * FilesController handles all file related API routes.
+ * 
+ * postUpload() - Uploads a new file. Handles auth, validation, adding to DB, queueing image thumbnail job.
+ * getShow() - Gets a file by ID. Handles auth and converting IDs.
+ * getIndex() - Lists files in a folder. Handles pagination and converting IDs.
+ * putPublish() - Publishes a file. Handles auth and validation.
+ * putUnpublish() - Unpublishes a file. Handles auth.
+ * getFile() - Serves a file's content. Handles auth, MIME types, thumbnail sizes.
+ */
 import Queue from 'bull';
+import fs from 'fs';
+import mime from 'mime-types'; // Added to handle MIME types
+import { ObjectId } from 'mongodb';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 

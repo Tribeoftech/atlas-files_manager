@@ -1,6 +1,12 @@
+/**
+ * Controller for app.
+ * Exports AppController class with methods for:
+ * - Getting app status by checking Redis and DB connections
+ * - Getting app stats by getting number of users and files from DB
+ */
 // Controller for app
-import redisClient from '../utils/redis';
-import dbClient from '../utils/db';
+import dbClient from "../utils/db";
+import redisClient from "../utils/redis";
 
 // AppController class
 class AppController {
@@ -10,6 +16,11 @@ class AppController {
     return res.status(200).json({ redis, db });
   }
 
+  /**
+   * Gets app stats by retrieving number of users and files from the database.
+   *
+   * @returns {Object} Object with `users` and `files` properties containing counts.
+   */
   // Getting stats
   static async getStats(req, res) {
     const users = await dbClient.nbUsers();
