@@ -10,9 +10,15 @@ import routes from "./routes/index";
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Adding JSON body parser middleware
+/**
+ * Sets up middleware and routes in the Express app instance.
+ *
+ * Uses express.json() middleware to parse JSON request bodies.
+ * Registers the routes defined in ./routes/index.js.
+ * Starts listening on the defined port.
+ * Exports the app instance.
+ */
 app.use(express.json());
-// Adding routes
 app.use(routes);
 
 app.listen(port, () => {
